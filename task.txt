@@ -1,7 +1,9 @@
 Test Task
 Unique words counter API
+
 Create a web application to calculate the amount of the unique words in the
 text.
+
 The application must have two endpoints for interaction.
 Application will require a database to store information with following
 columns: id, creation_timestamp, text, unique_words_count.
