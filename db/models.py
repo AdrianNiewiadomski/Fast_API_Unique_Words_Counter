@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, TIMESTAMP
 
-from database import Base
+from .database import Base
 
 
 class RequestTexts(Base):

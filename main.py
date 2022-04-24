@@ -4,10 +4,10 @@ from pydantic import BaseModel
 from datetime import datetime
 import time
 
-import models
-from database import engine, SessionLocal
+from db import models
+from db.database import engine, SessionLocal
 from unique_words_counter import UniqueWordsCounter
-from models import RequestTexts
+from db.models import RequestTexts
 
 models.Base.metadata.create_all(bind=engine)
 
