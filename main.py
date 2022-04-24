@@ -1,6 +1,8 @@
 from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
+from datetime import datetime
+import time
 
 import models
 from database import engine, SessionLocal
@@ -33,6 +35,7 @@ async def root(words_request: WordsRequest, db: Session = Depends(get_db)):
     data["uniqueWordsCount"] = uwc.analyze_data()
 
     rt = RequestTexts()
+    rt.creation_timestamp = datetime.fromtimestamp(time.time())
     rt.text = data["text"]
     rt.unique_words_count = data["uniqueWordsCount"]
 
