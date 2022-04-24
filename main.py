@@ -1,18 +1,42 @@
-from fastapi import Request, FastAPI
+from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
+from pydantic import BaseModel
 
 import models
-from database import engine
+from database import engine, SessionLocal
 from unique_words_counter import UniqueWordsCounter
-
-app = FastAPI()
+from models import RequestTexts
 
 models.Base.metadata.create_all(bind=engine)
 
+app = FastAPI()
+
+
+class WordsRequest(BaseModel):
+    text: str
+
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 
 @app.post("/words")
-async def root(request: Request):
-    data: dict = await request.json()
+async def root(words_request: WordsRequest, db: Session = Depends(get_db)):
+    data = {"text": words_request.text}
+
     uwc = UniqueWordsCounter(data["text"])
     data["uniqueWordsCount"] = uwc.analyze_data()
+
+    rt = RequestTexts()
+    rt.text = data["text"]
+    rt.unique_words_count = data["uniqueWordsCount"]
+
+    db.add(rt)
+    db.commit()
+
     return data
