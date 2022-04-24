@@ -40,3 +40,9 @@ async def root(words_request: WordsRequest, db: Session = Depends(get_db)):
     db.commit()
 
     return data
+
+
+@app.get("/words")
+def fetch_data():
+    db = SessionLocal()
+    return tuple(db.query(RequestTexts).all())
