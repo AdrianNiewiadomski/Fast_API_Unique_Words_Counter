@@ -9,6 +9,7 @@ To install required packages use
 
 I initially used
 > pip install "fastapi[all]"
+> pip install FastAPI-SQLAlchemy
 
 ## Development server
 To run the server use:
